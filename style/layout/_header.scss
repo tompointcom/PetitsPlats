@@ -1,0 +1,62 @@
+/* style/layout/_header.scss */
+.header {
+  &__logo {
+    position: absolute;
+    top: 50px;
+    left: 70px;
+    z-index: 2;
+  }
+  &__bg {
+    width: 100%;
+    height: 90vh;
+    object-fit: cover;
+    position: relative;
+    pointer-events: none;
+  }
+  &__search {
+    width: 120vh;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    &__title {
+      color: $main-color;
+      font-size: 55px;
+      line-height: 75px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    &__input-wrapper {
+      position: relative;
+      width: 100%;
+    }
+    &__input {
+      outline: none;
+      height: 40px;
+      width: 100%;
+      padding: 20px 20px 20px 40px;
+      margin: 10px 0;
+      border-radius: 10px;
+      font-size: 1rem;
+      color: $placeholder-color;
+    }
+    &__button {
+      position: absolute;
+      top: 50%;
+      right: -3rem;
+      transform: translateY(-50%);
+    }
+    &__close {
+      position: absolute;
+      top: 50%;
+      right: 30px;
+      transform: translateY(-50%);
+      display: none;
+    }
+  }
+}

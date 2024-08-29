@@ -1,0 +1,42 @@
+/* Remove default margin, padding, and border */
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+/* Set default font sizes and line heights */
+html {
+  font-size: 100%;
+  line-height: 1.6;
+}
+
+/* Ensure consistent box-sizing */
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/* Remove default list styles */
+ul, ol {
+  list-style: none;
+}
+
+/* Remove default text decoration */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Remove default table border spacing */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Remove default button styles */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
