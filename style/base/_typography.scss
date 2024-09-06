@@ -1,8 +1,14 @@
-/* Import the Anton font from Google Fonts */
+/* Import the Anton and Manrope fonts from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap');
 
 /* Apply the Anton font to specific elements */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Anton', sans-serif;
   font-weight: 400;
+}
+
+/* Apply the Manrope font to body text or other elements as needed */
+body, p, a, li, span {
+  font-family: 'Manrope', sans-serif;
 }
