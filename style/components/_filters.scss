@@ -1,0 +1,117 @@
+.filter-section {
+  display: flex;
+  justify-content: flex-start;
+  gap: 60px;
+  margin: 10px 0;
+
+  .filter-dropdown {
+    position: relative;
+    width: 10%;
+    margin-left: 45px;
+
+    &__button {
+      width: 100%;
+      margin: 20px 0;
+      padding: 10px;
+      border-radius: 10px;
+      background-color: #fff;
+      cursor: pointer;
+      text-align: left;
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 15px;
+        height: 8px;
+        background: url('data:image/svg+xml;utf8,<svg width="15" height="8" viewBox="0 0 15 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 7L7.5 1L14 7" stroke="%231B1B1B" stroke-linecap="round"/></svg>') no-repeat center;
+        pointer-events: none;
+        transition: transform 0.3s;
+      }
+      &.open::after {
+        transform: translateY(-50%) rotate(180deg);
+      }
+    }
+
+    &:has(.filter-dropdown--menu[style*="display: block"]) .filter-dropdown--button::after {
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    &__menu {
+      position: absolute;
+      width: 100%;
+      max-height: 200px;
+      overflow-y: auto;
+      border-radius: 4px;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: none;
+      top: calc(100% - 20px);
+      left: 0;
+      box-sizing: border-box;
+
+      &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    &__searchbar {
+      width: 90%;
+      margin: 10px 0 10px 10px;
+      padding: 10px;
+      box-sizing: border-box;
+      outline: none;
+      box-shadow: none;
+      border: solid 1px #C6C6C6;
+      border-radius: 3px;
+
+      &--icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+    }
+
+    &__item {
+      padding: 10px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f0f0f0;
+      }
+    }
+  }
+}
+
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px;
+}
+
+.active-filter {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  background-color: $main-color;
+  border-radius: 5px;
+}
+
+.remove-filter {
+  background: none;
+  border: none;
+  margin-left: 5px;
+  cursor: pointer;
+  color: #1B1B1B;
+}
