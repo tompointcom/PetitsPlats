@@ -34,6 +34,39 @@
     </section>
 </header>
 <main>
+    <div class="filter-section">
+        <div class="filter-dropdown">
+            <button class="filter-dropdown__button">Ingrédients</button>
+            <div id="ingredient-filter" class="filter-dropdown__menu">
+                <div class="filter-dropdown__search-wrapper">
+                    <input id="ingredient-search" class="filter-dropdown__searchbar" type="text">
+                    <svg class="filter-dropdown__search-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="5" cy="5" r="4.75" stroke="#7A7A7A" stroke-width="0.5"/>
+                        <line x1="9.17678" y1="9.32322" x2="13.6768" y2="13.8232" stroke="#7A7A7A" stroke-width="0.5"/>
+                    </svg>
+                </div>
+                <div class="filter-dropdown__item" data-value=""></div>
+            </div>
+        </div>
+        <div class="filter-dropdown">
+            <button class="filter-dropdown__button">Ustensiles</button>
+            <div id="ustensil-filter" class="filter-dropdown__menu">
+                <input id="ustensil-search" class="filter-dropdown__searchbar" type="text">
+                <div class="filter-dropdown__item" data-value=""></div>
+            </div>
+        </div>
+        <div class="filter-dropdown">
+            <button class="filter-dropdown__button">Appareils</button>
+            <div id="appliance-filter" class="filter-dropdown__menu">
+                <input id="appliance-search" class="filter-dropdown__searchbar" type="text">
+                <div class="filter-dropdown__item" data-value=""></div>
+
+            </div>
+        </div>
+    </div>
+    <div class="active-filters">
+    </div>
+    <span id="recipe-count" class="recipe-count"></span>
     <div class="recipes-section"></div>
 </main>
 <script src="/data/recipes.js"></script>
