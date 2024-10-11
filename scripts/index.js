@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateRecipeCount(recipes.length);
     };
 
-    // Display the ingredients, ustensils and appliances in the dropdown
     const populateFilters = (recipes) => {
         const ingredients = new Set();
         const ustensils = new Set();
@@ -76,7 +75,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         displayData(filteredRecipes);
-        populateFilters(filteredRecipes); // Repopulate filters based on filtered recipes
+        populateFilters(filteredRecipes);
     };
 
     const searchRecipes = (query) => {
@@ -114,8 +113,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.querySelectorAll('.filter-dropdown__button').forEach(button => {
         button.addEventListener('click', (e) => {
-            const filterMenu = e.target.nextElementSibling;
-            toggleDropdown(e.target, filterMenu);
+            const filterMenu = e.target.closest('.filter-dropdown__button').nextElementSibling;
+            toggleDropdown(button, filterMenu);
         });
     });
 
@@ -137,13 +136,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         activeFiltersContainer.appendChild(activeFilter);
         filterRecipes();
     };
-
-    document.querySelectorAll('.filter-dropdown__button').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const filterMenu = e.target.nextElementSibling;
-            toggleDropdown(filterMenu);
-        });
-    });
 
     ingredientFilter.addEventListener('click', (e) => {
         if (e.target.classList.contains('filter-dropdown__item')) {
@@ -169,5 +161,4 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     await displayData(recipes);
     populateFilters(recipes);
-
 });
