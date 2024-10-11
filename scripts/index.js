@@ -29,23 +29,47 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const searchRecipes = () => {
         const searchText = searchBar.value.toLowerCase();
-        const selectedIngredients = Array.from(document.querySelectorAll('.active-filter[data-type="ingredient"]')).map(el => el.dataset.value.toLowerCase());
-        const selectedUstensils = Array.from(document.querySelectorAll('.active-filter[data-type="ustensil"]')).map(el => el.dataset.value.toLowerCase());
-        const selectedAppliances = Array.from(document.querySelectorAll('.active-filter[data-type="appliance"]')).map(el => el.dataset.value.toLowerCase());
+        const selectedIngredients = [];
+        const selectedUstensils = [];
+        const selectedAppliances = [];
 
-        const matches = recipes.filter(recipe => {
+        document.querySelectorAll('.active-filter[data-type="ingredient"]').forEach(el => selectedIngredients.push(el.dataset.value.toLowerCase()));
+        document.querySelectorAll('.active-filter[data-type="ustensil"]').forEach(el => selectedUstensils.push(el.dataset.value.toLowerCase()));
+        document.querySelectorAll('.active-filter[data-type="appliance"]').forEach(el => selectedAppliances.push(el.dataset.value.toLowerCase()));
+
+        const matches = [];
+        for (let i = 0; i < recipes.length; i++) {
+            const recipe = recipes[i];
             const matchesSearchText = regexSearch(recipe.name, searchText) ||
                 recipe.ingredients.some(ingredient => regexSearch(ingredient.ingredient, searchText)) ||
                 regexSearch(recipe.description, searchText) ||
                 regexSearch(recipe.appliance, searchText) ||
                 (recipe.ustensils && recipe.ustensils.some(ustensil => regexSearch(ustensil, searchText)));
 
-            const matchesFilters = selectedIngredients.every(ingredient => recipe.ingredients.some(i => i.ingredient.toLowerCase() === ingredient)) &&
-                selectedUstensils.every(ustensil => recipe.ustensils && recipe.ustensils.some(u => u.toLowerCase() === ustensil)) &&
-                selectedAppliances.every(appliance => recipe.appliance && recipe.appliance.toLowerCase() === appliance);
+            let matchesFilters = true;
+            for (let j = 0; j < selectedIngredients.length; j++) {
+                if (!recipe.ingredients.some(i => i.ingredient.toLowerCase() === selectedIngredients[j])) {
+                    matchesFilters = false;
+                    break;
+                }
+            }
+            for (let j = 0; j < selectedUstensils.length; j++) {
+                if (!recipe.ustensils || !recipe.ustensils.some(u => u.toLowerCase() === selectedUstensils[j])) {
+                    matchesFilters = false;
+                    break;
+                }
+            }
+            for (let j = 0; j < selectedAppliances.length; j++) {
+                if (!recipe.appliance || recipe.appliance.toLowerCase() !== selectedAppliances[j]) {
+                    matchesFilters = false;
+                    break;
+                }
+            }
 
-            return matchesSearchText && matchesFilters;
-        });
+            if (matchesSearchText && matchesFilters) {
+                matches.push(recipe);
+            }
+        }
 
         if (matches.length === 0) {
             recipesContainer.innerHTML = `<p class="notfound-message">Aucune recette ne contient '${searchText}'. Vous pouvez chercher « tarte aux pommes », « poisson », etc.</p>`;
@@ -60,17 +84,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         const ustensils = new Set();
         const appliances = new Set();
 
-        recipes.forEach(recipe => {
+        for (let i = 0; i < recipes.length; i++) {
+            const recipe = recipes[i];
             if (recipe.ingredients) {
-                recipe.ingredients.forEach(ingredient => ingredients.add(ingredient.ingredient));
+                for (let j = 0; j < recipe.ingredients.length; j++) {
+                    ingredients.add(recipe.ingredients[j].ingredient);
+                }
             }
             if (recipe.ustensils) {
-                recipe.ustensils.forEach(ustensil => ustensils.add(ustensil));
+                for (let j = 0; j < recipe.ustensils.length; j++) {
+                    ustensils.add(recipe.ustensils[j]);
+                }
             }
             if (recipe.appliance) {
                 appliances.add(recipe.appliance);
             }
-        });
+        }
 
         const populateDropdown = (filter, items) => {
             filter.innerHTML = '';
