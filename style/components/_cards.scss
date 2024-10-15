@@ -4,11 +4,21 @@
   gap: 20px;
   justify-items: center;
 
+  @media (max-width: 1400px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
   &__recipe-card {
     width: 380px;
     border-radius: 20px;
     background: white;
     position: relative;
+    margin: 0 auto;
 
     &__img {
       border-radius: 20px 20px 0 0;

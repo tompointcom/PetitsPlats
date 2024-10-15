@@ -4,9 +4,12 @@
   gap: 60px;
   margin: 10px 0;
 
+
   .filter-dropdown {
     position: relative;
-    width: 10%;
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
     margin-left: 45px;
 
     &__button {
@@ -36,13 +39,17 @@
       }
     }
 
-    &:has(.filter-dropdown--menu[style*="display: block"]) .filter-dropdown--button::after {
-      transform: translateY(-50%) rotate(180deg);
+    &:has(.filter-dropdown__menu[style*="display: block"]) .filter-dropdown__menu {
+      border-radius: 0 0 4px 4px;
+    }
+
+    &:has(.filter-dropdown__menu[style*="display: block"]) .filter-dropdown__button {
+      border-radius: 10px 10px 0 0;
     }
 
     &__menu {
       position: absolute;
-      width: 100%;
+      width: 113%;
       max-height: 200px;
       overflow-y: auto;
       border-radius: 4px;
@@ -63,24 +70,40 @@
       scrollbar-width: none;
     }
 
+    &__search-wrapper {
+      //position: relative;
+      display: flex;
+      align-items: center;
+    }
     &__searchbar {
       width: 90%;
-      margin: 10px 0 10px 10px;
+      margin: 10px;
       padding: 10px;
       box-sizing: border-box;
       outline: none;
       box-shadow: none;
       border: solid 1px #C6C6C6;
       border-radius: 3px;
-
-      &--icon {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-      }
     }
+
+    &__search-icon {
+      position: absolute;
+      right: 15px;
+      top: 30px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    &__search__clear {
+      position: absolute;
+      right: 35px;
+      display: none;
+    }
+
+    &__search__clear.visible {
+      display: inline-block;
+    }
+
 
     &__item {
       padding: 10px;
@@ -95,23 +118,38 @@
 
 .active-filters {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 20px;
+  flex-direction: row;
 }
 
 .active-filter {
+  background-color: #FFD15B;
+  width: 130px;
+  border-radius: 10px;
+  margin-left: 45px;
+  padding: 10px 20px;
+  cursor: pointer;
   display: flex;
-  align-items: center;
-  padding: 5px 10px;
-  background-color: $main-color;
-  border-radius: 5px;
+  justify-content: space-between;
+
+  .remove-filter {
+    padding-top: 4px;
+  }
 }
 
-.remove-filter {
-  background: none;
-  border: none;
-  margin-left: 5px;
-  cursor: pointer;
-  color: #1B1B1B;
+@media (max-width: 800px) {
+  .filter-section {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .filter-dropdown {
+    margin-left: 0;
+  }
+}
+
+.filter-dropdown__search-wrapper,
+.filter-dropdown__search-icon {
+  display: block;
+  visibility: visible;
 }

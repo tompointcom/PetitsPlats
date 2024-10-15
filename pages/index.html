@@ -17,7 +17,7 @@
         <h1 class="header__search__title">Cherchez parmi plus de 1500 recettes <br>
             du quotidien, simples et délicieuses</h1>
         <div class="header__search__input-wrapper">
-            <input id="searchbar" class="header__search__input" placeholder="Rechercher une recette, un ingrédient, ..." type="text">
+            <input class="searchbar header__search__input" placeholder="Rechercher une recette, un ingrédient, ..." type="text">
             <button class="header__search__button">
                 <svg class="header__search__icon" width="51" height="53" viewBox="0 0 51 53" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect y="0.421875" width="51" height="52" rx="10" fill="#1B1B1B"/>
@@ -25,7 +25,7 @@
                     <line x1="30.3536" y1="31.0683" x2="39.3536" y2="40.0683" stroke="white"/>
                 </svg>
             </button>
-            <button class="header__search__close">
+            <button class="clear-search header__search__clear">
                 <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M15 15L8.5 8.5M8.5 8.5L2 2M8.5 8.5L15 2M8.5 8.5L2 15" stroke="#7A7A7A" stroke-width="2.16667" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -35,36 +35,67 @@
 </header>
 <main>
     <div class="filter-section">
-        <div class="filter-dropdown">
-            <button class="filter-dropdown__button">Ingrédients</button>
-            <div id="ingredient-filter" class="filter-dropdown__menu">
-                <div class="filter-dropdown__search-wrapper">
-                    <input id="ingredient-search" class="filter-dropdown__searchbar" type="text">
-                    <svg class="filter-dropdown__search-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="5" cy="5" r="4.75" stroke="#7A7A7A" stroke-width="0.5"/>
-                        <line x1="9.17678" y1="9.32322" x2="13.6768" y2="13.8232" stroke="#7A7A7A" stroke-width="0.5"/>
-                    </svg>
-                </div>
-                <div class="filter-dropdown__item" data-value=""></div>
-            </div>
-        </div>
-        <div class="filter-dropdown">
-            <button class="filter-dropdown__button">Ustensiles</button>
-            <div id="ustensil-filter" class="filter-dropdown__menu">
-                <input id="ustensil-search" class="filter-dropdown__searchbar" type="text">
-                <div class="filter-dropdown__item" data-value=""></div>
-            </div>
-        </div>
-        <div class="filter-dropdown">
-            <button class="filter-dropdown__button">Appareils</button>
-            <div id="appliance-filter" class="filter-dropdown__menu">
-                <input id="appliance-search" class="filter-dropdown__searchbar" type="text">
-                <div class="filter-dropdown__item" data-value=""></div>
+        <div class="filter-section">
+            <div class="filter-dropdown">
+                <button class="filter-dropdown__button">Ingredients</button>
+                <div id="ingredient-filter" class="filter-dropdown__menu">
+                    <div class="filter-dropdown__search-wrapper">
+                        <input type="text" class="searchbar filter-dropdown__searchbar">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="filter-dropdown__search-icon">
+                            <circle cx="5" cy="5" r="4.75" stroke="#7A7A7A" stroke-width="0.5"/>
+                            <line x1="9.17678" y1="9.32322" x2="13.6768" y2="13.8232" stroke="#7A7A7A" stroke-width="0.5"/>
+                        </svg>
+                        <button class="clear-search filter-dropdown__search__clear">
+                            <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 7L4 4M4 4L1 1M4 4L7 1M4 4L1 7" stroke="#7A7A7A" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
 
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-dropdown">
+                <button class="filter-dropdown__button">Ustensiles</button>
+                <div id="ustensil-filter" class="filter-dropdown__menu">
+                    <div class="filter-dropdown__search-wrapper">
+                        <input type="text" class="searchbar filter-dropdown__searchbar">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="filter-dropdown__search-icon">
+                            <circle cx="5" cy="5" r="4.75" stroke="#7A7A7A" stroke-width="0.5"/>
+                            <line x1="9.17678" y1="9.32322" x2="13.6768" y2="13.8232" stroke="#7A7A7A" stroke-width="0.5"/>
+                        </svg>
+                        <button class="clear-search filter-dropdown__search__clear">
+                            <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 7L4 4M4 4L1 1M4 4L7 1M4 4L1 7" stroke="#7A7A7A" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-dropdown">
+                <button class="filter-dropdown__button">Appareils</button>
+                <div id="appliance-filter" class="filter-dropdown__menu">
+                    <div class="filter-dropdown__search-wrapper">
+                        <input type="text" class="searchbar filter-dropdown__searchbar">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="filter-dropdown__search-icon">
+                            <circle cx="5" cy="5" r="4.75" stroke="#7A7A7A" stroke-width="0.5"/>
+                            <line x1="9.17678" y1="9.32322" x2="13.6768" y2="13.8232" stroke="#7A7A7A" stroke-width="0.5"/>
+                        </svg>
+                        <button class="clear-search filter-dropdown__search__clear">
+                            <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 7L4 4M4 4L1 1M4 4L7 1M4 4L1 7" stroke="#7A7A7A" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <div class="active-filters">
+
     </div>
     <span id="recipe-count" class="recipe-count"></span>
     <div class="recipes-section"></div>
