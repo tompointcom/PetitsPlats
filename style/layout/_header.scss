@@ -14,7 +14,7 @@
     pointer-events: none;
   }
   &__search {
-    width: 120vh;
+    width: 60%;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -24,6 +24,8 @@
     justify-content: center;
     align-items: center;
     gap: 20px;
+
+
     &__title {
       color: $main-color;
       font-size: 55px;
@@ -51,12 +53,13 @@
       right: -3rem;
       transform: translateY(-50%);
     }
-    &__close {
+    &__clear {
       position: absolute;
       top: 50%;
       right: 30px;
       transform: translateY(-50%);
       display: none;
+
     }
   }
 }

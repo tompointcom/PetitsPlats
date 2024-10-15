@@ -1,4 +1,4 @@
-import { recipesTemplate } from "./templates/recipesTemplate.js";
+import { recipesTemplate } from './templates/recipesTemplate.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const recipesContainer = document.querySelector('.recipes-section');
@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const ustensilFilter = document.getElementById('ustensil-filter');
     const applianceFilter = document.getElementById('appliance-filter');
     const activeFiltersContainer = document.querySelector('.active-filters');
-    const searchBar = document.getElementById('searchbar');
+    const searchBar = document.querySelector('.searchbar');
+    const clearSearchButton = document.querySelector('.clear-search');
 
     const updateRecipeCount = (count) => {
         nbRecipes.textContent = `${count} recettes`;
@@ -40,26 +41,55 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         const populateDropdown = (filter, items) => {
-            filter.innerHTML = '';
-            const searchInput = document.createElement('input');
-            searchInput.className = 'filter-dropdown__searchbar';
-            searchInput.type = 'text';
-            filter.appendChild(searchInput);
+            const menu = filter.querySelector('.filter-dropdown__menu');
+            if (!menu) {
+                console.error('Menu element not found in filter:', filter);
+                return;
+            }
+            const searchWrapper = menu.querySelector('.filter-dropdown__search-wrapper');
+            const searchInput = searchWrapper.querySelector('.filter-dropdown__searchbar');
+            const clearButton = searchWrapper.querySelector('.filter-dropdown__search__clear');
+
+            // Clear existing items
+            menu.querySelectorAll('.filter-dropdown__item').forEach(item => item.remove());
 
             items.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'filter-dropdown__item';
                 div.dataset.value = item;
                 div.textContent = item;
-                filter.appendChild(div);
+                menu.appendChild(div);
             });
 
-            searchInput.addEventListener('input', () => filterDropdown(searchInput, filter));
+            searchInput.addEventListener('input', () => filterDropdown(searchInput, menu));
+
+            clearButton.addEventListener('click', () => {
+                searchInput.value = '';
+                filterDropdown(searchInput, menu);
+            });
         };
 
-        populateDropdown(ingredientFilter, ingredients);
-        populateDropdown(ustensilFilter, ustensils);
-        populateDropdown(applianceFilter, appliances);
+        const ingredientFilter = document.querySelector('#ingredient-filter').closest('.filter-dropdown');
+        const ustensilFilter = document.querySelector('#ustensil-filter').closest('.filter-dropdown');
+        const applianceFilter = document.querySelector('#appliance-filter').closest('.filter-dropdown');
+
+        if (ingredientFilter) {
+            populateDropdown(ingredientFilter, ingredients);
+        } else {
+            console.error('Ingredient filter parent not found');
+        }
+
+        if (ustensilFilter) {
+            populateDropdown(ustensilFilter, ustensils);
+        } else {
+            console.error('Ustensil filter parent not found');
+        }
+
+        if (applianceFilter) {
+            populateDropdown(applianceFilter, appliances);
+        } else {
+            console.error('Appliance filter parent not found');
+        }
     };
 
     const filterRecipes = () => {
@@ -99,7 +129,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const filterDropdown = (searchInput, filter) => {
         const searchText = searchInput.value.toLowerCase();
         Array.from(filter.children).forEach(item => {
-            if (item.classList.contains('filter-dropdown__searchbar')) return;
+            if (item.classList.contains('filter-dropdown__search-wrapper') || item.classList.contains('filter-dropdown__searchbar') || item.classList.contains('filter-dropdown__search-icon')) {
+                return;
+            }
             const text = item.textContent.toLowerCase();
             item.style.display = text.includes(searchText) ? '' : 'none';
         });
@@ -110,6 +142,39 @@ document.addEventListener('DOMContentLoaded', async () => {
         filter.style.display = isOpen ? 'none' : 'block';
         button.classList.toggle('open', !isOpen);
     };
+
+    const setupClearButton = (searchInput, clearButton, searchFunction) => {
+        const updateClearButtonVisibility = () => {
+            clearButton.style.display = searchInput.value ? 'block' : 'none';
+        };
+
+        searchInput.addEventListener('input', (e) => {
+            updateClearButtonVisibility();
+            searchFunction(e.target.value);
+        });
+
+        clearButton.addEventListener('click', () => {
+            searchInput.value = '';
+            updateClearButtonVisibility();
+            searchFunction('');
+        });
+
+        updateClearButtonVisibility();
+    };
+
+    // Setup clear button for the main search bar
+    if (searchBar && clearSearchButton) {
+        setupClearButton(searchBar, clearSearchButton, searchRecipes);
+    }
+
+    // Setup clear buttons for filter search bars
+    document.querySelectorAll('.filter-dropdown__search-wrapper').forEach(wrapper => {
+        const searchInput = wrapper.querySelector('.filter-dropdown__searchbar');
+        const clearButton = wrapper.querySelector('.filter-dropdown__search__clear');
+        if (searchInput && clearButton) {
+            setupClearButton(searchInput, clearButton, (query) => filterDropdown(searchInput, searchInput.closest('.filter-dropdown__menu')));
+        }
+    });
 
     document.querySelectorAll('.filter-dropdown__button').forEach(button => {
         button.addEventListener('click', (e) => {
@@ -127,7 +192,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         activeFilter.textContent = `${value} `;
         const removeButton = document.createElement('button');
         removeButton.className = 'remove-filter';
-        removeButton.textContent = 'x';
+        removeButton.innerHTML = `
+    <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 11.5L7 6.5M7 6.5L2 1.5M7 6.5L12 1.5M7 6.5L2 11.5" stroke="#1B1B1B" stroke-width="2.16667" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+`;
         removeButton.addEventListener('click', () => {
             activeFilter.remove();
             filterRecipes();
