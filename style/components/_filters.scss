@@ -71,7 +71,6 @@
     }
 
     &__search-wrapper {
-      //position: relative;
       display: flex;
       align-items: center;
     }
@@ -141,10 +140,6 @@
     flex-direction: column;
     align-items: center;
     gap: 20px;
-  }
-
-  .filter-dropdown {
-    margin-left: 0;
   }
 }
 

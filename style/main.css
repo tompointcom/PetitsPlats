@@ -205,6 +205,7 @@ body {
 @media (max-width: 800px) {
   .recipe-count {
     justify-content: center;
+    text-align: center;
   }
 }
 
@@ -344,9 +345,6 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 20px;
-  }
-  .filter-dropdown {
-    margin-left: 0;
   }
 }
 .filter-dropdown__search-wrapper,

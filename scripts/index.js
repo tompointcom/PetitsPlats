@@ -1,5 +1,8 @@
 import { recipesTemplate } from './templates/recipesTemplate.js';
 
+/**
+ * Initializes the application once the DOM content is fully loaded.
+ */
 document.addEventListener('DOMContentLoaded', async () => {
     const recipesContainer = document.querySelector('.recipes-section');
     const nbRecipes = document.querySelector('.recipe-count');
@@ -10,10 +13,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const searchBar = document.querySelector('.searchbar');
     const clearSearchButton = document.querySelector('.clear-search');
 
+    /**
+     * Updates the displayed recipe count.
+     * @param {number} count - The number of recipes to display.
+     */
     const updateRecipeCount = (count) => {
         nbRecipes.textContent = `${count} recettes`;
     };
 
+    /**
+     * Displays the given recipes in the recipes container.
+     * @param {Array} recipes - The recipes to display.
+     */
     const displayData = (recipes) => {
         recipesContainer.innerHTML = '';
         recipes.forEach(recipe => {
@@ -23,6 +34,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateRecipeCount(recipes.length);
     };
 
+    /**
+     * Populates the filter dropdowns with items from the given recipes.
+     * @param {Array} recipes - The recipes to extract filter items from.
+     */
     const populateFilters = (recipes) => {
         const ingredients = new Set();
         const ustensils = new Set();
@@ -40,6 +55,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
 
+        /**
+         * Populates a specific filter dropdown with items.
+         * @param {Element} filter - The filter dropdown element.
+         * @param {Set} items - The items to populate the dropdown with.
+         */
         const populateDropdown = (filter, items) => {
             const menu = filter.querySelector('.filter-dropdown__menu');
             if (!menu) {
@@ -50,7 +70,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const searchInput = searchWrapper.querySelector('.filter-dropdown__searchbar');
             const clearButton = searchWrapper.querySelector('.filter-dropdown__search__clear');
 
-            // Clear existing items
             menu.querySelectorAll('.filter-dropdown__item').forEach(item => item.remove());
 
             items.forEach(item => {
@@ -92,40 +111,56 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
+    let mainSearchQuery = '';
+
+    /**
+     * Filters the recipes based on the main search query and active filters.
+     */
     const filterRecipes = () => {
         const selectedIngredients = Array.from(document.querySelectorAll('.active-filter[data-type="ingredient"]')).map(el => el.dataset.value.toLowerCase());
         const selectedUstensils = Array.from(document.querySelectorAll('.active-filter[data-type="ustensil"]')).map(el => el.dataset.value.toLowerCase());
         const selectedAppliances = Array.from(document.querySelectorAll('.active-filter[data-type="appliance"]')).map(el => el.dataset.value.toLowerCase());
 
         const filteredRecipes = recipes.filter(recipe => {
+            const matchesMainSearch = mainSearchQuery === '' || recipe.name.toLowerCase().includes(mainSearchQuery) ||
+                recipe.description.toLowerCase().includes(mainSearchQuery) ||
+                recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(mainSearchQuery)) ||
+                (recipe.ustensils && recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(mainSearchQuery)));
+
             const hasIngredients = selectedIngredients.every(ingredient => recipe.ingredients.some(i => i.ingredient.toLowerCase() === ingredient));
             const hasUstensils = selectedUstensils.every(ustensil => recipe.ustensils && recipe.ustensils.some(u => u.toLowerCase() === ustensil));
             const hasAppliances = selectedAppliances.every(appliance => recipe.appliance && recipe.appliance.toLowerCase() === appliance);
-            return hasIngredients && hasUstensils && hasAppliances;
-        });
 
-        displayData(filteredRecipes);
-        populateFilters(filteredRecipes);
-    };
-
-    const searchRecipes = (query) => {
-        const lowerCaseQuery = query.toLowerCase();
-        const filteredRecipes = recipes.filter(recipe => {
-            const matchesTitle = recipe.name.toLowerCase().includes(lowerCaseQuery);
-            const matchesDescription = recipe.description.toLowerCase().includes(lowerCaseQuery);
-            const matchesIngredients = recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(lowerCaseQuery));
-            const matchesUstensils = recipe.ustensils && recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(lowerCaseQuery));
-            return matchesTitle || matchesDescription || matchesIngredients || matchesUstensils;
+            return matchesMainSearch && hasIngredients && hasUstensils && hasAppliances;
         });
 
         if (filteredRecipes.length === 0) {
-            recipesContainer.innerHTML = `<p class="notfound-message">Aucune recette ne contient '${query}'. Vous pouvez chercher « tarte aux pommes », « poisson », etc.</p>`;
+            recipesContainer.innerHTML = `<p class="notfound-message">Aucune recette ne contient '${mainSearchQuery}'. Vous pouvez chercher « tarte aux pommes », « poisson », etc.</p>`;
             updateRecipeCount(0);
         } else {
             displayData(filteredRecipes);
+            populateFilters(filteredRecipes);
         }
     };
 
+    /**
+     * Handles the main search query input and triggers filtering.
+     * @param {string} query - The search query.
+     */
+    const searchRecipes = (query) => {
+        mainSearchQuery = query.toLowerCase();
+        filterRecipes();
+    };
+
+    searchBar.addEventListener('input', (e) => {
+        searchRecipes(e.target.value);
+    });
+
+    /**
+     * Filters the dropdown items based on the search input.
+     * @param {Element} searchInput - The search input element.
+     * @param {Element} filter - The filter dropdown menu element.
+     */
     const filterDropdown = (searchInput, filter) => {
         const searchText = searchInput.value.toLowerCase();
         Array.from(filter.children).forEach(item => {
@@ -137,12 +172,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     };
 
+    /**
+     * Toggles the visibility of a dropdown menu.
+     * @param {Element} button - The button that toggles the dropdown.
+     * @param {Element} filter - The filter dropdown menu element.
+     */
     const toggleDropdown = (button, filter) => {
         const isOpen = filter.style.display === 'block';
         filter.style.display = isOpen ? 'none' : 'block';
         button.classList.toggle('open', !isOpen);
     };
 
+    /**
+     * Sets up the clear button functionality for a search input.
+     * @param {Element} searchInput - The search input element.
+     * @param {Element} clearButton - The clear button element.
+     * @param {Function} searchFunction - The function to call on search input.
+     */
     const setupClearButton = (searchInput, clearButton, searchFunction) => {
         const updateClearButtonVisibility = () => {
             clearButton.style.display = searchInput.value ? 'block' : 'none';
@@ -172,7 +218,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const searchInput = wrapper.querySelector('.filter-dropdown__searchbar');
         const clearButton = wrapper.querySelector('.filter-dropdown__search__clear');
         if (searchInput && clearButton) {
-            setupClearButton(searchInput, clearButton, (query) => filterDropdown(searchInput, searchInput.closest('.filter-dropdown__menu')));
+            setupClearButton(searchInput, clearButton, () => filterDropdown(searchInput, searchInput.closest('.filter-dropdown__menu')));
         }
     });
 
@@ -183,6 +229,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
+    /**
+     * Selects a dropdown item and adds it to the active filters.
+     * @param {Element} filter - The filter dropdown element.
+     * @param {Element} item - The selected item element.
+     * @param {string} type - The type of filter (ingredient, ustensil, appliance).
+     */
     const selectDropdownItem = (filter, item, type) => {
         const value = item.dataset.value;
         const activeFilter = document.createElement('div');
